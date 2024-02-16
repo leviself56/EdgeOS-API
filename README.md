@@ -1,4 +1,4 @@
-# Simple EdgeOS REST API
+# EdgeOS REST API
 ## Php code for querying statistics from Ubiquiti Edgeswitch
 
 Server will need access to the switch in the same subnet/vlan.
