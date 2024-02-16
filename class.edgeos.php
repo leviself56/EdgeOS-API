@@ -13,7 +13,7 @@ class EdgeOS {
 
 	public function __construct($ip, $user, $pass) {
 		$this->api_url	= "https://".$ip."/api/v1.0";
-		$this->ip		= $ip;
+		$this->ip	= $ip;
 		$this->token 	= $this->login($ip, $user, $pass);
 	}
 
