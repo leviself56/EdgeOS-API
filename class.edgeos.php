@@ -1,8 +1,8 @@
 <?php
 /**
  * @project:	EdgeOS REST API
- * @access:		Thu Feb 15 14:34:00 CST 2023
- * @author:		Levi Self <levi@airlinkrb.com>
+ * @access:	Thu Feb 15 14:34:00 CST 2023
+ * @author:	Levi Self <levi@airlinkrb.com>
  **/
 
 class EdgeOS {
@@ -17,19 +17,19 @@ class EdgeOS {
 		$this->token 	= $this->login($ip, $user, $pass);
 	}
 
-    private function login($ip, $user, $pass) {
+    	private function login($ip, $user, $pass) {
 		$login_url = $this->api_url."/user/login";
 
-        $credentials = json_encode(array(
-            "username"  =>  $user,
-            "password"  =>  $pass
-        ));
+        	$credentials = json_encode(array(
+            		"username"  =>  $user,
+            		"password"  =>  $pass
+        	));
 
-        $headers = array(
-            "Content-Type: application/json",
-            "Accept: application/json",
-            "Referer: https://$ip/"
-        );
+        	$headers = array(
+            		"Content-Type: application/json",
+            		"Accept: application/json",
+            		"Referer: https://$ip/"
+        	);
 
 		$cURL = curl_init();
 		curl_setopt($cURL, CURLOPT_URL, $login_url);
@@ -44,20 +44,20 @@ class EdgeOS {
 		$user_agent	=	"Php/7.0 (Debian)";
 		curl_setopt($cURL, CURLOPT_USERAGENT, $user_agent);
 		curl_setopt($cURL, CURLINFO_HEADER_OUT, false);
-        curl_setopt($cURL, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($cURL, CURLOPT_ENCODING, "");
-        curl_setopt($cURL, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        	curl_setopt($cURL, CURLOPT_FOLLOWLOCATION, true);
+       		curl_setopt($cURL, CURLOPT_ENCODING, "");
+        	curl_setopt($cURL, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 				
 		$result     = curl_exec($cURL);
-    	$header     = curl_getinfo($cURL);
-    	curl_close($cURL);
+    		$header     = curl_getinfo($cURL);
+    		curl_close($cURL);
 
-        preg_match('#x-auth-token: ([^\s]+)#i', $result, $token);
-        if (isset($token[1]) && $token[1] != '') {
-            return $token[1];
-        } else {
+        	preg_match('#x-auth-token: ([^\s]+)#i', $result, $token);
+        	if (isset($token[1]) && $token[1] != '') {
+            		return $token[1];
+        	} else {
 			return false;
-        }
+        	}
 	}
 
 	private function query($type, $url, $payload=null) {
@@ -149,14 +149,14 @@ class EdgeOS {
 		$i = 0;
 		foreach ($data as $interface) {
 			$result[$i]['id']			=	$interface['identification']['id'];
-			$result[$i]['name']		=	$interface['identification']['name'];
-			$result[$i]['mac']		=	$interface['identification']['mac'];
-			$result[$i]['enabled']	=	$interface['status']['enabled'];
-			$result[$i]['plugged']	=	$interface['status']['plugged'];
-			$result[$i]['currentSpeed']=	$interface['status']['currentSpeed'];
-			$result[$i]['speed']		=	$interface['status']['speed'];
-			$result[$i]['mtu']		=	$interface['status']['mtu'];
-			$result[$i]['cableLength']=	$interface['status']['cableLength'];
+			$result[$i]['name']			=	$interface['identification']['name'];
+			$result[$i]['mac']			=	$interface['identification']['mac'];
+			$result[$i]['enabled']			=	$interface['status']['enabled'];
+			$result[$i]['plugged']			=	$interface['status']['plugged'];
+			$result[$i]['currentSpeed']		=	$interface['status']['currentSpeed'];
+			$result[$i]['speed']			=	$interface['status']['speed'];
+			$result[$i]['mtu']			=	$interface['status']['mtu'];
+			$result[$i]['cableLength']		=	$interface['status']['cableLength'];
 			if (isset($interface['port']['sfp'])) {
 				$result[$i]['sfp_present']	=	$interface['port']['sfp']['present'];
 				$result[$i]['sfp_vendor']	=	$interface['port']['sfp']['vendor'];
@@ -188,13 +188,13 @@ class EdgeOS {
 			"ram_usage"				=>	$data[0]['device']['ram']['usage'],
 			"ram_free"				=>	$data[0]['device']['ram']['free'],
 			"ram_total"				=>	$data[0]['device']['ram']['total'],
-			"fan_speed_1"			=>	$data[0]['device']['fanSpeeds'][0]['value'],
-			"fan_speed_2"			=>	$data[0]['device']['fanSpeeds'][1]['value'],
+			"fan_speed_1"				=>	$data[0]['device']['fanSpeeds'][0]['value'],
+			"fan_speed_2"				=>	$data[0]['device']['fanSpeeds'][1]['value'],
 			"uptime"				=>	$data[0]['device']['uptime'],
-			"device_mac"			=>	$data1['identification']['mac'],
-			"device_model"			=>	$data1['identification']['model'],
-			"device_firmware"		=>	$data1['identification']['firmwareVersion'],
-			"device_fallbackIp"		=>	$data1['capabilities']['device']['defaultFallbackAddress']
+			"device_mac"				=>	$data1['identification']['mac'],
+			"device_model"				=>	$data1['identification']['model'],
+			"device_firmware"			=>	$data1['identification']['firmwareVersion'],
+			"device_fallbackIp"			=>	$data1['capabilities']['device']['defaultFallbackAddress']
 		);
 		return $result;
 	}
