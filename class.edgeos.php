@@ -1,6 +1,6 @@
 <?php
 /**
- * @project:	EdgeOS REST API
+ * @project:	ALRB Web Development
  * @access:		Thu Feb 15 14:34:00 CST 2023
  * @author:		Levi Self <levi@airlinkrb.com>
  **/
@@ -13,23 +13,23 @@ class EdgeOS {
 
 	public function __construct($ip, $user, $pass) {
 		$this->api_url	= "https://".$ip."/api/v1.0";
-		$this->ip		    = $ip;
-		$this->token 	  = $this->login($ip, $user, $pass);
+		$this->ip		= $ip;
+		$this->token 	= $this->login($ip, $user, $pass);
 	}
 
-  private function login($ip, $user, $pass) {
+    private function login($ip, $user, $pass) {
 		$login_url = $this->api_url."/user/login";
 
-    $credentials = json_encode(array(
-        "username"  =>  $user,
-        "password"  =>  $pass
-    ));
+        $credentials = json_encode(array(
+            "username"  =>  $user,
+            "password"  =>  $pass
+        ));
 
-    $headers = array(
-        "Content-Type: application/json",
-        "Accept: application/json",
-        "Referer: https://$ip/"
-    );
+        $headers = array(
+            "Content-Type: application/json",
+            "Accept: application/json",
+            "Referer: https://$ip/"
+        );
 
 		$cURL = curl_init();
 		curl_setopt($cURL, CURLOPT_URL, $login_url);
@@ -49,15 +49,15 @@ class EdgeOS {
         curl_setopt($cURL, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 				
 		$result     = curl_exec($cURL);
-    $header     = curl_getinfo($cURL);
-    curl_close($cURL);
+    	$header     = curl_getinfo($cURL);
+    	curl_close($cURL);
 
-    preg_match('#x-auth-token: ([^\s]+)#i', $result, $token);
-    if (isset($token[1]) && $token[1] != '') {
-        return $token[1];
-    } else {
-		  return false;
-    }
+        preg_match('#x-auth-token: ([^\s]+)#i', $result, $token);
+        if (isset($token[1]) && $token[1] != '') {
+            return $token[1];
+        } else {
+			return false;
+        }
 	}
 
 	private function query($type, $url, $payload=null) {
@@ -148,21 +148,21 @@ class EdgeOS {
 		$result = array();
 		$i = 0;
 		foreach ($data as $interface) {
-			$result[$i]['id']			    =	$interface['identification']['id'];
-			$result[$i]['name']		    =	$interface['identification']['name'];
-			$result[$i]['mac']		    =	$interface['identification']['mac'];
-			$result[$i]['enabled']	  =	$interface['status']['enabled'];
-			$result[$i]['plugged']	  =	$interface['status']['plugged'];
+			$result[$i]['id']			=	$interface['identification']['id'];
+			$result[$i]['name']		=	$interface['identification']['name'];
+			$result[$i]['mac']		=	$interface['identification']['mac'];
+			$result[$i]['enabled']	=	$interface['status']['enabled'];
+			$result[$i]['plugged']	=	$interface['status']['plugged'];
 			$result[$i]['currentSpeed']=	$interface['status']['currentSpeed'];
-			$result[$i]['speed']		  =	$interface['status']['speed'];
-			$result[$i]['mtu']		    =	$interface['status']['mtu'];
+			$result[$i]['speed']		=	$interface['status']['speed'];
+			$result[$i]['mtu']		=	$interface['status']['mtu'];
 			$result[$i]['cableLength']=	$interface['status']['cableLength'];
 			if (isset($interface['port']['sfp'])) {
 				$result[$i]['sfp_present']	=	$interface['port']['sfp']['present'];
-				$result[$i]['sfp_vendor']	  =	$interface['port']['sfp']['vendor'];
-				$result[$i]['sfp_serial']	  =	$interface['port']['sfp']['serial'];
+				$result[$i]['sfp_vendor']	=	$interface['port']['sfp']['vendor'];
+				$result[$i]['sfp_serial']	=	$interface['port']['sfp']['serial'];
 				$result[$i]['sfp_txFault']	=	$interface['port']['sfp']['txFault'];
-				$result[$i]['sfp_los']		  =	$interface['port']['sfp']['los'];
+				$result[$i]['sfp_los']		=	$interface['port']['sfp']['los'];
 			}
 			$i++;
 		}
@@ -190,11 +190,11 @@ class EdgeOS {
 			"ram_total"				=>	$data[0]['device']['ram']['total'],
 			"fan_speed_1"			=>	$data[0]['device']['fanSpeeds'][0]['value'],
 			"fan_speed_2"			=>	$data[0]['device']['fanSpeeds'][1]['value'],
-			"uptime"				  =>	$data[0]['device']['uptime'],
+			"uptime"				=>	$data[0]['device']['uptime'],
 			"device_mac"			=>	$data1['identification']['mac'],
-			"device_model"		=>	$data1['identification']['model'],
-			"device_firmware"	=>	$data1['identification']['firmwareVersion'],
-			"device_fallbackIp"=>	$data1['capabilities']['device']['defaultFallbackAddress']
+			"device_model"			=>	$data1['identification']['model'],
+			"device_firmware"		=>	$data1['identification']['firmwareVersion'],
+			"device_fallbackIp"		=>	$data1['capabilities']['device']['defaultFallbackAddress']
 		);
 		return $result;
 	}
