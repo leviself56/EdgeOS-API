@@ -1,7 +1,7 @@
 <?php
 require_once("class.edgeos.php");
 
-$EdgeOS = new EdgeOS($ip="10.15.100.170", $user="ubnt", $pass="Get214Out");
+$EdgeOS = new EdgeOS($ip="10.15.100.170", $user="ubnt", $pass="ubnt");
 
 echo "<pre>";
 print_r($EdgeOS->GetSFPs());
